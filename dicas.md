@@ -1,0 +1,2 @@
+# CI = Continuous Integration
+# CI é o ato de preparar o código para o deploy, ou seja, antes do código ir para o deploy vocÊ precisar rodar os testes, ver se o código está a rodar, etc. Esse processo todo antes do deply chama-se CI e automatizar isso pode ser vantajoso porque validar isso na mão você pode esquecer de algum detalhe, com isso, você não esquece e caso o commit não passar no workflow criado, a pessoa não vai conseguir fazer o pull request.
