@@ -1,35 +1,29 @@
+# Nome do workflow (Escolha minha)
 name: ci-golang-workflow
-on: 
-  pull_request:
-    branches:
-      - develop
+
+# on: [push] = O processo vai rodar quando um push for feito. Se quisessemos que rodasse quando alguém fizer pull request, então seria on: [pull_request]
+on: [push]
+
+# jobs são as tarefas que o meu workflow vai rodar
 jobs:
+  # check-application é o nome do primeiro job que o workflow vai rodar
   check-application:
+    # runs-on define em qual máquina esse job vai rodar, no nosso caso aqui, o job check-application vai rodar no ubuntu-latest
     runs-on: ubuntu-latest
+    # Steps são as etapas que o job vai cumprir
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-go@v2
-        with:
-          go-version: 1.15
-      - run: go test
-      - run: go run math.go
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+      # Dentro de step você pode usar uma action tua com o comando run, exemplo:  - run: echo "Olá CI" ou você pode usar uma action que uma outra pessoa criou (E pode ser achada dentro do github actions) usando o comando uses
+      # Essa action actions/checkout@v2 é usada para qualquer projeto, pois ela simplesmente clona o teu repositório para dentro da máquina virtual que você criou, a fim de possibilitar os testes que você vai querer executar.
+     - uses: actions/checkout@v2
+     # essa action setup-go@v2 faz o seguinte, instala go na tua máquina e instala a versão correta do go que precisas.
+     # Se o projeto fosse node, usariamos uma action de setup do node que instalaria o node e configuraria uma versão correta do node pois sem node/go na máquina não daria para exceutar as coisas
+     - uses: actions/setup-go@v2
+       # with go-version 1.15 estamos especificando a versão do go que vamos usar na máquina, assim fariamos também no node.
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v1 
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          push: false
-          tags: wesleywillians/fc2.0-ci-go:latest
-
-    
+    # - run: npm install: Se o projeto fosse node faltaria esse passo para instalar as dependências na máquina virtual antes de rodar o projeto e os testes
+       with: 
+        go-version: 1.15
+    # run go test está a rodar os testes da aplicação (Forma de rodar em go) e se der erro a github actions falha
+     - run: go test
+    # run go run math.go está a rodar a aplicação (Forma de rodar em go) e se der erro a github actions falha
+     - run: go run math.go
