@@ -4,6 +4,7 @@ name: ci-golang-workflow
 # on: [push] = O processo vai rodar quando um push for feito. Se quisessemos que rodasse quando alguém fizer pull request, então seria on: [pull_request]
 on: [push]
 
+
 # jobs são as tarefas que o meu workflow vai rodar
 jobs:
   # check-application é o nome do primeiro job que o workflow vai rodar
