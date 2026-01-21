@@ -20,3 +20,5 @@
 # Criar uma outra rule para o master, nesse caso branch pattern name coloca master e seleciona também o Require status checks to pass before merging e coloca o nome do teu job assim como feito na develop, também seleciona esse: Require branches to be up to date before merging, seleciona também o Lock branch e o Do not allow bypassing the above settings, ou seja, criamos basicamente a mesma coisa.
 
 # A partir do momento que vc cria a regra que não se pode dar um push diretamente numa branch, ela começa a dar erro se você tentar dar push, um erro assim:  ! [remote rejected] develop -> develop (protected branch hook declined). Daí você precisa criar uma branch de feature para poder enviar.
+
+# Depois de tudo que fizemos, agora o workflow em develop só roda depois que alguém fazer um pull request e só pode fazer um merge desse pull request depois que o workflow passar.
