@@ -10,18 +10,19 @@ on:
     branches:
       - develop
 
-
-# Usamos essa strategy se quisermos testar o projeto em mais de uma versão, nesse caso mais de uma versão do go.
-strategy:
-  # Para testar em mais de uma versão usamos matrix, o nome da linguagem e as versões que queremos.
-  matrix:
-    go: ['1.14', '1.15']
 # jobs são as tarefas que o meu workflow vai rodar
 jobs:
   # check-application é o nome do primeiro job que o workflow vai rodar
   check-application:
     # runs-on define em qual máquina esse job vai rodar, no nosso caso aqui, o job check-application vai rodar no ubuntu-latest
     runs-on: ubuntu-latest
+
+    # Usamos essa strategy se quisermos testar o projeto em mais de uma versão, nesse caso mais de uma versão do go.
+    strategy:
+  # Para testar em mais de uma versão usamos matrix, o nome da linguagem e as versões que queremos.
+      matrix:
+        go: ['1.14', '1.15']
+
     # Steps são as etapas que o job vai cumprir
     steps:
       # Dentro de step você pode usar uma action tua com o comando run, exemplo:  - run: echo "Olá CI" ou você pode usar uma action que uma outra pessoa criou (E pode ser achada dentro do github actions) usando o comando uses
