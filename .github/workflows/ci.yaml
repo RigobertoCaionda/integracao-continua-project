@@ -10,13 +10,19 @@ on:
     branches:
       - develop
 
-
 # jobs são as tarefas que o meu workflow vai rodar
 jobs:
   # check-application é o nome do primeiro job que o workflow vai rodar
   check-application:
     # runs-on define em qual máquina esse job vai rodar, no nosso caso aqui, o job check-application vai rodar no ubuntu-latest
     runs-on: ubuntu-latest
+
+    # Usamos essa strategy se quisermos testar o projeto em mais de uma versão, nesse caso mais de uma versão do go.
+    strategy:
+  # Para testar em mais de uma versão usamos matrix, o nome da linguagem e as versões que queremos.
+      matrix:
+        go: ['1.14', '1.15']
+
     # Steps são as etapas que o job vai cumprir
     steps:
       # Dentro de step você pode usar uma action tua com o comando run, exemplo:  - run: echo "Olá CI" ou você pode usar uma action que uma outra pessoa criou (E pode ser achada dentro do github actions) usando o comando uses
@@ -29,7 +35,8 @@ jobs:
 
     # - run: npm install: Se o projeto fosse node faltaria esse passo para instalar as dependências na máquina virtual antes de rodar o projeto e os testes
        with: 
-        go-version: 1.15
+        # O matrix.go está apontando para as versões 1.14 e 1.15, quer dizer que estamos testando nossa aplicação nessas duas  versões
+        go-version: ${{ matrix.go }}
     # run go test está a rodar os testes da aplicação (Forma de rodar em go) e se der erro a github actions falha
      - run: go test
     # run go run math.go está a rodar a aplicação (Forma de rodar em go) e se der erro a github actions falha
