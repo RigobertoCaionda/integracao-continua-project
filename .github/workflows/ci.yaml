@@ -64,5 +64,5 @@ jobs:
        with:
         # Esse push indica se a imagem será enviada para o dockerhub ou não, se você colocar true, ele vai tentar enviar a imagem para o dockerhub, aí você precisa de colocar a autenticação nesse arquivo, se você colocar false, ele vai apenas fazer o build, mas não vai mandar para o dockerhub
         push: true
-        # Esse rigobertocaionda/integracao-continua será o nome da imagem na máquina virtual que criaremos temporariamente 
+        # Esse rigobertocaionda/integracao-continua será o nome da imagem na máquina virtual que criaremos temporariamente  
         tags: rigobertocaionda/integracao-continua:latest
