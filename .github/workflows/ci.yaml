@@ -43,12 +43,19 @@ jobs:
     # run go run math.go está a rodar a aplicação (Forma de rodar em go) e se der erro a github actions falha
      - run: go run math.go
 
-      # Daqui para baixo tem o propósito de fazer o build da imagem do projeto
+      # Daqui para baixo tem o propósito de fazer o build da imagem do projeto na máquina virtual, isso para confirmar que o código que estamos enviando é buildável, tem dockerfile correto, etc.
      - name: Set QEMU
        uses: docker/setup-qemu-action@v1
 
      - name: Set up Docker Buildx
        uses: docker/setup-buildx-action@v1
+
+      # Para fazer push no dockerhub precisa se autenticar
+     - name: Login to DockerHub
+       uses: docker/login-action@v1
+       with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
      - name: Build and Push
       # Quando você coloca id, você consegue pegar o resultado dessa action e usar em um outro step
@@ -56,6 +63,6 @@ jobs:
        uses: docker/build-push-action@v2
        with:
         # Esse push indica se a imagem será enviada para o dockerhub ou não, se você colocar true, ele vai tentar enviar a imagem para o dockerhub, aí você precisa de colocar a autenticação nesse arquivo, se você colocar false, ele vai apenas fazer o build, mas não vai mandar para o dockerhub
-        push: false
+        push: true
         # Esse rigobertocaionda/integracao-continua será o nome da imagem na máquina virtual que criaremos temporariamente
         tags: rigobertocaionda/integracao-continua:latest
