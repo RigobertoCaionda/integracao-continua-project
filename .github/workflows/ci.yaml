@@ -17,11 +17,11 @@ jobs:
     # runs-on define em qual máquina esse job vai rodar, no nosso caso aqui, o job check-application vai rodar no ubuntu-latest
     runs-on: ubuntu-latest
 
-    # Usamos essa strategy se quisermos testar o projeto em mais de uma versão, nesse caso mais de uma versão do go.
-    strategy:
+    # Usamos essa strategy se quisermos testar o projeto em mais de uma versão, só quando queremos isso , nesse caso mais de uma versão do go.
+    #strategy:
   # Para testar em mais de uma versão usamos matrix, o nome da linguagem e as versões que queremos.
-      matrix:
-        go: ['1.14', '1.15']
+      #matrix:
+        #go: ['1.14', '1.15']
 
     # Steps são as etapas que o job vai cumprir
     steps:
@@ -36,8 +36,26 @@ jobs:
     # - run: npm install: Se o projeto fosse node faltaria esse passo para instalar as dependências na máquina virtual antes de rodar o projeto e os testes
        with: 
         # O matrix.go está apontando para as versões 1.14 e 1.15, quer dizer que estamos testando nossa aplicação nessas duas  versões
-        go-version: ${{ matrix.go }}
+        #go-version: ${{ matrix.go }}
+        go-version: 1.15
     # run go test está a rodar os testes da aplicação (Forma de rodar em go) e se der erro a github actions falha
      - run: go test
     # run go run math.go está a rodar a aplicação (Forma de rodar em go) e se der erro a github actions falha
      - run: go run math.go
+
+      # Daqui para baixo tem o propósito de fazer o build da imagem do projeto
+     - name: Set QEMU
+       uses: docker/setup-qemu-action@v1
+
+     - name: Set up Docker Buildx
+       uses: docker/setup-buildx-action@v1
+
+     - name: Build and Push
+      # Quando você coloca id, você consegue pegar o resultado dessa action e usar em um outro step
+       id: docker_build
+       uses: docker/build-push-action@v2
+       with:
+        # Esse push indica se a imagem será enviada para o dockerhub ou não, se você colocar true, ele vai tentar enviar a imagem para o dockerhub, aí você precisa de colocar a autenticação nesse arquivo, se você colocar false, ele vai apenas fazer o build, mas não vai mandar para o dockerhub
+        push: false
+        # Esse rigobertocaionda/integracao-continua será o nome da imagem na máquina virtual que criaremos temporariamente
+        tags: rigobertocaionda/integracao-continua:latest
